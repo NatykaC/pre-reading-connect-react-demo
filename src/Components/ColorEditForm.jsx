@@ -14,14 +14,32 @@ function ColorEditForm() {
 
   const handleTextChange = (event) => {
     setColor({ ...color, [event.target.id]: event.target.value });
-  };
+  };  
 
   const handleCheckboxChange = () => {
     setColor({ ...color, isFavorite: !color.isFavorite });
   };
 
   // Update a color. Redirect to show view
-  const updateColor = () => {};
+  const updateColor = () => {
+    const editedData = {
+      name: color.name,
+      is_favorite: color.isFavorite
+    }
+    try {
+      fetch(`${API}/colors/${index}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(editedData)
+      })
+      .then(res => res.json())
+      .then( ()=> navigate('/colors'))
+    } catch (error) {
+      return error
+    }
+  };
 
   // On page load, fill in the form with the color data.
 
